@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DailyGamesITA - Giochi di Parole Quotidiani</title>
+  <meta name="description" content="I migliori giochi di parole quotidiani in italiano. Sfida la tua mente ogni giorno con 5 in 5 e Impiccato Reverse.">
+  <meta name="theme-color" content="#121213">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- HEADER -->
+    <header>
+      <div class="header-left header-col">
+        <button id="btn-about" class="icon-btn" aria-label="Informazioni sul portale">ℹ️</button>
+      </div>
+      <div class="header-center">
+        <h1 class="logo">
+          DAILYGAMES ITA
+          <svg class="flag-icon" viewBox="0 0 3 2" width="22" height="15" aria-label="Italia" role="img">
+            <rect width="1" height="2" fill="#009246" />
+            <rect x="1" width="1" height="2" fill="#ffffff" />
+            <rect x="2" width="1" height="2" fill="#ce2b37" />
+          </svg>
+        </h1>
+        <span class="site-tag">NUOVE SFIDE OGNI GIORNO</span>
+      </div>
+      <div class="header-right header-col">
+        <button id="btn-settings" class="icon-btn" aria-label="Impostazioni portale">⚙️</button>
+      </div>
+    </header>
+
+    <!-- GRIGLIA GIOCHI MINIMAL -->
+    <main class="games-grid">
+      <!-- GIOCO 1: 5 IN 5 -->
+      <article class="game-card" id="card-5in5">
+        <div class="card-header">
+          <span class="game-badge badge-pending" id="badge-5in5">DA GIOCARE ⏳</span>
+        </div>
+        <div class="card-body">
+          <h2 class="game-title">5 in 5</h2>
+          <p class="game-desc">
+            Indovina 5 parole consecutive da 4 a 8 lettere prima che scadano i 5 minuti di tempo!
+          </p>
+        </div>
+        <div class="card-footer">
+          <a href="5in5/index.html" class="btn-play">GIOCA ORA</a>
+        </div>
+      </article>
+
+      <!-- GIOCO 2: IMPICCATO REVERSE -->
+      <article class="game-card" id="card-impiccato">
+        <div class="card-header">
+          <span class="game-badge badge-pending" id="badge-impiccato">DA GIOCARE ⏳</span>
+        </div>
+        <div class="card-body">
+          <h2 class="game-title">Impiccato Reverse</h2>
+          <p class="game-desc">
+            Indovina la parola segreta, ma ogni lettera errata ne aggiunge una nuova!
+          </p>
+        </div>
+        <div class="card-footer">
+          <a href="impiccato-reverse/index.html" class="btn-play">GIOCA ORA</a>
+        </div>
+      </article>
+
+      <!-- GIOCO 3: PROSSIMAMENTE -->
+      <article class="game-card card-disabled">
+        <div class="card-header">
+          <span class="game-badge badge-coming">IN ARRIVO 🔒</span>
+        </div>
+        <div class="card-body">
+          <h2 class="game-title">Nuovo Gioco</h2>
+          <p class="game-desc">
+            Una nuova sfida di parole in arrivo prossimamente.
+          </p>
+        </div>
+        <div class="card-footer">
+          <button class="btn-play btn-disabled" disabled>PRESTO DISPONIBILE</button>
+        </div>
+      </article>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p class="footer-text">
+        DailyGamesITA • Ideato e sviluppato da <strong>Marcello M.</strong>
+      </p>
+    </footer>
+  </div>
+
+  <!-- TOAST NOTIFICHE -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MODALE INFORMAZIONI PORTALE -->
+  <div id="modal-about" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Informazioni su DailyGamesITA</h2>
+        <button class="btn-close-modal" data-close="modal-about">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>DailyGamesITA</strong> è un portale indipendente dedicato ai giochi di parole quotidiani in lingua italiana.</p>
+        <hr class="modal-divider">
+        <p><strong>Versione Hub:</strong> 1.0.0</p>
+        <p><strong>Autore:</strong> Marcello M.</p>
+        <p><strong>Contatti & Segnalazioni:</strong> <a href="mailto:cinqueincinque@gmail.com" class="link-contact">cinqueincinque@gmail.com</a></p>
+        <hr class="modal-divider">
+        <p class="modal-note">Tutti i progressi e le statistiche vengono salvati in locale nel tuo browser per garantirti la massima privacy e velocità.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-about">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE IMPOSTAZIONI HUB (PROMEMORIA CENTRALIZZATO) -->
+  <div id="modal-settings" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Impostazioni Portale</h2>
+        <button class="btn-close-modal" data-close="modal-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>🔔 Promemoria Giornaliero</h3>
+        <p>Ricevi una notifica ogni giorno per ricordarti di giocare alle nuove sfide di parole!</p>
+        
+        <div class="reminder-setting-group">
+          <label for="reminder-time"><strong>Orario promemoria:</strong></label>
+          <input type="time" id="reminder-time" class="time-input" value="09:00">
+        </div>
+
+        <div class="reminder-status-box" id="reminder-status-text">
+          Stato: <span>Disattivato</span>
+        </div>
+
+        <div class="reminder-actions-group">
+          <button id="btn-toggle-reminder" class="btn-primary">ATTIVA PROMEMORIA</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close="modal-settings">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DI CONTROLLO STATO GIOCHI & NOTIFICHE -->
+  <script>
+    (() => {
+      "use strict";
+
+      const REMINDER_KEY = "dailygames_reminder_config";
+
+      const btnAbout = document.getElementById("btn-about");
+      const btnSettings = document.getElementById("btn-settings");
+      const modalAbout = document.getElementById("modal-about");
+      const modalSettings = document.getElementById("modal-settings");
+      const toastContainer = document.getElementById("toast-container");
+
+      const reminderTimeInput = document.getElementById("reminder-time");
+      const reminderStatusText = document.getElementById("reminder-status-text");
+      const btnToggleReminder = document.getElementById("btn-toggle-reminder");
+
+      function showToast(msg) {
+        if (!toastContainer) return;
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = msg;
+        toastContainer.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      }
+
+      // Gestione apertura/chiusura modali
+      if (btnAbout && modalAbout) {
+        btnAbout.addEventListener("click", () => modalAbout.classList.remove("hidden"));
+      }
+      if (btnSettings && modalSettings) {
+        btnSettings.addEventListener("click", () => modalSettings.classList.remove("hidden"));
+      }
+
+      document.querySelectorAll("[data-close]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const targetModalId = e.currentTarget.getAttribute("data-close");
+          const targetModal = document.getElementById(targetModalId);
+          if (targetModal) targetModal.classList.add("hidden");
+        });
+      });
+
+      // Gestione Promemoria Centralizzato
+      function getReminderConfig() {
+        try {
+          return JSON.parse(localStorage.getItem(REMINDER_KEY) || '{"enabled":false,"time":"09:00"}');
+        } catch (e) {
+          return { enabled: false, time: "09:00" };
+        }
+      }
+
+      function saveReminderConfig(config) {
+        localStorage.setItem(REMINDER_KEY, JSON.stringify(config));
+      }
+
+      function updateReminderUI(enabled, time) {
+        if (!reminderStatusText || !btnToggleReminder) return;
+        if (enabled) {
+          reminderStatusText.className = "reminder-status-box active";
+          reminderStatusText.innerHTML = `Stato: <span>Attivo (ore ${time})</span>`;
+          btnToggleReminder.textContent = "DISATTIVA PROMEMORIA";
+          btnToggleReminder.classList.remove("btn-primary");
+          btnToggleReminder.classList.add("btn-danger");
+        } else {
+          reminderStatusText.className = "reminder-status-box";
+          reminderStatusText.innerHTML = "Stato: <span>Disattivato</span>";
+          btnToggleReminder.textContent = "ATTIVA PROMEMORIA";
+          btnToggleReminder.classList.remove("btn-danger");
+          btnToggleReminder.classList.add("btn-primary");
+        }
+      }
+
+      function initReminders() {
+        const config = getReminderConfig();
+        if (reminderTimeInput) {
+          reminderTimeInput.value = config.time || "09:00";
+          reminderTimeInput.addEventListener("change", () => {
+            const current = getReminderConfig();
+            current.time = reminderTimeInput.value || "09:00";
+            saveReminderConfig(current);
+            if (current.enabled) {
+              updateReminderUI(true, current.time);
+              showToast(`Orario promemoria aggiornato alle ${current.time}`);
+            }
+          });
+        }
+
+        updateReminderUI(config.enabled, config.time || "09:00");
+
+        if (btnToggleReminder) {
+          btnToggleReminder.addEventListener("click", async () => {
+            const current = getReminderConfig();
+            if (!current.enabled) {
+              if (!("Notification" in window)) {
+                showToast("Notifiche non supportate da questo browser.");
+                return;
+              }
+
+              let permission = Notification.permission;
+              if (permission !== "granted") {
+                permission = await Notification.requestPermission();
+              }
+
+              if (permission === "granted") {
+                current.enabled = true;
+                current.time = reminderTimeInput ? reminderTimeInput.value : "09:00";
+                saveReminderConfig(current);
+                updateReminderUI(true, current.time);
+                showToast("Promemoria giornaliero attivato! 🔔");
+              } else {
+                showToast("Permesso notifiche non concesso nel browser.");
+              }
+            } else {
+              current.enabled = false;
+              saveReminderConfig(current);
+              updateReminderUI(false, current.time || "09:00");
+              showToast("Promemoria disattivato.");
+            }
+          });
+        }
+      }
+
+      // Sincronizzazione dinamica dello stato giornaliero da localStorage
+      function checkGamesStatus() {
+        const todayISO = new Date().toISOString().slice(0, 10);
+        const startDate = new Date("2026-01-01T00:00:00");
+        const now = new Date();
+        const diffTime = Math.abs(now.getTime() - startDate.getTime());
+        const currentDayNumber = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+        // 1. Controllo 5 in 5
+        try {
+          const stats5 = JSON.parse(localStorage.getItem("cinque_in_cinque_stats") || "{}");
+          const badge5 = document.getElementById("badge-5in5");
+          const save5 = JSON.parse(localStorage.getItem(`cinque_save_day_${currentDayNumber}`) || "null");
+
+          if (badge5) {
+            if (stats5.history && stats5.history[todayISO]) {
+              if (stats5.history[todayISO].won) {
+                badge5.textContent = "COMPLETATO 🏆";
+                badge5.className = "game-badge badge-won";
+              } else {
+                badge5.textContent = "COMPLETATO ✅";
+                badge5.className = "game-badge badge-played";
+              }
+            } else if (save5 && !save5.isGameOver && (save5.isTimerStarted || save5.currentRoundIndex > 0 || (save5.roundAttempts && save5.roundAttempts.some(a => a > 0)))) {
+              badge5.textContent = "IN CORSO 🟡";
+              badge5.className = "game-badge badge-progress";
+            } else {
+              badge5.textContent = "DA GIOCARE ⏳";
+              badge5.className = "game-badge badge-pending";
+            }
+          }
+        } catch (e) {}
+
+        // 2. Controllo Impiccato Reverse
+        try {
+          const settings = JSON.parse(localStorage.getItem("impiccato_reverse_settings") || '{"wordLength":5}');
+          const len = settings.wordLength || 5;
+          const statsImp = JSON.parse(localStorage.getItem(`impiccato_reverse_stats_len_${len}`) || "{}");
+          const badgeImp = document.getElementById("badge-impiccato");
+          const saveImp = JSON.parse(localStorage.getItem(`impiccato_reverse_save_day_${currentDayNumber}_len_${len}`) || "null");
+
+          if (badgeImp) {
+            if (statsImp.history && statsImp.history[todayISO]) {
+              if (statsImp.history[todayISO].won) {
+                badgeImp.textContent = "COMPLETATO 🏆";
+                badgeImp.className = "game-badge badge-won";
+              } else {
+                badgeImp.textContent = "COMPLETATO ✅";
+                badgeImp.className = "game-badge badge-played";
+              }
+            } else if (saveImp && !saveImp.isGameOver && (saveImp.activeWordsCount > 1 || (saveImp.guessedLetters && saveImp.guessedLetters.length > 0) || (saveImp.missedLetters && saveImp.missedLetters.length > 0))) {
+              badgeImp.textContent = "IN CORSO 🟡";
+              badgeImp.className = "game-badge badge-progress";
+            } else {
+              badgeImp.textContent = "DA GIOCARE ⏳";
+              badgeImp.className = "game-badge badge-pending";
+            }
+          }
+        } catch (e) {}
+      }
+
+      initReminders();
+      checkGamesStatus();
+    })();
+  </script>
+</body>
+</html>
