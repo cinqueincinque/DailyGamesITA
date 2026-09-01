@@ -3,19 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Impiccato Reverse - Daily Word Game Italiano</title>
-  <meta name="theme-color" content="#538d4e">
+  <title>Impiccato Reverse - Daily Word Game Italiano | DailyGamesITA</title>
+  <meta name="description" content="Gioca a Impiccato Reverse su DailyGamesITA: indovina la parola segreta in italiano evitando gli errori prima di raggiungere il limite di 7 parole. Nuova sfida ogni giorno!">
+  <meta name="keywords" content="impiccato reverse, foximax italiano, gioco impiccato, daily games ita, giochi di parole italiani, word game quotidiano, enigmistica">
+  <meta name="author" content="Marcello M.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://daily-games-ita.vercel.app/impiccato-reverse/">
+  <meta name="theme-color" content="#121213">
+
+  <!-- OPEN GRAPH / FACEBOOK / WHATSAPP / TELEGRAM -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://daily-games-ita.vercel.app/impiccato-reverse/">
+  <meta property="og:title" content="Impiccato Reverse - Daily Word Game Italiano">
+  <meta property="og:description" content="Indovina la parola segreta in italiano: ogni errore aggiunge una nuova parola sul tabellone! Riuscirai a vincere con il minor numero di parole?">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="DailyGamesITA">
+
+  <!-- TWITTER CARDS -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Impiccato Reverse - Daily Word Game Italiano">
+  <meta name="twitter:description" content="Indovina la parola segreta in italiano: ogni errore aggiunge una nuova parola sul tabellone! Sfida quotidiana su DailyGamesITA.">
+
   <link rel="stylesheet" href="style.css">
+
+  <!-- GOOGLE ANALYTICS (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZBPJ48DNG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9ZBPJ48DNG');
+  </script>
 </head>
 <body>
   <div id="app-container">
+    <!-- HEADER -->
     <header>
       <div class="header-left">
-        <div class="header-col-group">
-          <button id="btn-about" class="icon-btn" aria-label="Informazioni">ℹ️</button>
-          <button id="btn-help" class="icon-btn" aria-label="Regole del gioco">❓</button>
+        <div class="header-v-stack">
+          <button id="btn-help" class="icon-btn" aria-label="Regole di Gioco">❓</button>
+          <a href="../index.html" id="btn-home" class="icon-btn home-nav-btn" aria-label="Torna all'Hub DailyGamesITA" title="Torna all'Hub">🏠</a>
         </div>
-        <a href="../index.html" id="btn-home" class="icon-btn home-nav-btn" aria-label="Torna all'Hub DailyGamesITA" title="Torna all'Hub">🏠</a>
       </div>
 
       <div class="header-center">
@@ -35,82 +64,81 @@
       </div>
     </header>
 
-    <div class="words-status-bar">
-      <span class="status-label">Parole in gioco: <strong id="active-words-count">1</strong>/7</span>
-      <span class="words-counter" id="status-hint">Tocca una lettera per iniziare</span>
-    </div>
-
-    <main class="board-container">
+    <!-- STATUS BAR & BOARD -->
+    <main>
       <div id="toast-container" class="toast-container"></div>
-      <div id="board" class="board-grid"></div>
-    </main>
 
-    <div class="keyboard" id="keyboard">
-      <div class="keyboard-row">
-        <button class="key-btn" data-key="Q">Q</button>
-        <button class="key-btn" data-key="W">W</button>
-        <button class="key-btn" data-key="E">E</button>
-        <button class="key-btn" data-key="R">R</button>
-        <button class="key-btn" data-key="T">T</button>
-        <button class="key-btn" data-key="Y">Y</button>
-        <button class="key-btn" data-key="U">U</button>
-        <button class="key-btn" data-key="I">I</button>
-        <button class="key-btn" data-key="O">O</button>
-        <button class="key-btn" data-key="P">P</button>
-      </div>
-      <div class="keyboard-row">
-        <button class="key-btn" data-key="A">A</button>
-        <button class="key-btn" data-key="S">S</button>
-        <button class="key-btn" data-key="D">D</button>
-        <button class="key-btn" data-key="F">F</button>
-        <button class="key-btn" data-key="G">G</button>
-        <button class="key-btn" data-key="H">H</button>
-        <button class="key-btn" data-key="J">J</button>
-        <button class="key-btn" data-key="K">K</button>
-        <button class="key-btn" data-key="L">L</button>
-      </div>
-      <div class="keyboard-row">
-        <button class="key-btn" data-key="Z">Z</button>
-        <button class="key-btn" data-key="X">X</button>
-        <button class="key-btn" data-key="C">C</button>
-        <button class="key-btn" data-key="V">V</button>
-        <button class="key-btn" data-key="B">B</button>
-        <button class="key-btn" data-key="N">N</button>
-        <button class="key-btn" data-key="M">M</button>
-      </div>
-    </div>
+      <!-- BARRA DI STATO -->
+      <section class="status-bar" aria-live="polite">
+        <div class="status-info">
+          Parole attive: <span id="active-words-count" class="status-highlight">1</span>/7
+        </div>
+        <div id="status-hint" class="status-hint">0 errori commessi</div>
+      </section>
+
+      <!-- TABELLONE PAROLE (1 A 7 RIGHE) -->
+      <section id="board" class="board" aria-label="Tabellone di gioco"></section>
+
+      <!-- TASTIERA VIRTUALE QWERTY -->
+      <section id="keyboard" class="keyboard" aria-label="Tastiera virtuale">
+        <div class="kb-row">
+          <button class="key-btn" data-key="Q">Q</button>
+          <button class="key-btn" data-key="W">W</button>
+          <button class="key-btn" data-key="E">E</button>
+          <button class="key-btn" data-key="R">R</button>
+          <button class="key-btn" data-key="T">T</button>
+          <button class="key-btn" data-key="Y">Y</button>
+          <button class="key-btn" data-key="U">U</button>
+          <button class="key-btn" data-key="I">I</button>
+          <button class="key-btn" data-key="O">O</button>
+          <button class="key-btn" data-key="P">P</button>
+        </div>
+        <div class="kb-row">
+          <button class="key-btn" data-key="A">A</button>
+          <button class="key-btn" data-key="S">S</button>
+          <button class="key-btn" data-key="D">D</button>
+          <button class="key-btn" data-key="F">F</button>
+          <button class="key-btn" data-key="G">G</button>
+          <button class="key-btn" data-key="H">H</button>
+          <button class="key-btn" data-key="J">J</button>
+          <button class="key-btn" data-key="K">K</button>
+          <button class="key-btn" data-key="L">L</button>
+        </div>
+        <div class="kb-row">
+          <button class="key-btn" data-key="Z">Z</button>
+          <button class="key-btn" data-key="X">X</button>
+          <button class="key-btn" data-key="C">C</button>
+          <button class="key-btn" data-key="V">V</button>
+          <button class="key-btn" data-key="B">B</button>
+          <button class="key-btn" data-key="N">N</button>
+          <button class="key-btn" data-key="M">M</button>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <!-- MODALE REGOLE -->
+  <!-- MODALE COME GIOCARE -->
   <div id="modal-help" class="modal-overlay hidden">
     <div class="modal-card">
       <div class="modal-header">
-        <h2>Come Giocare a Impiccato Reverse</h2>
+        <h2>Come Giocare</h2>
         <button class="btn-close-modal" data-close="modal-help">&times;</button>
       </div>
       <div class="modal-body">
-        <p>Una variante strategica e inversa del classico gioco dell'<strong>Impiccato</strong>!</p>
+        <p>In <strong>Impiccato Reverse</strong> l'obiettivo è indovinare le parole misteriose sul tabellone commettendo il minor numero di errori possibile!</p>
         <hr class="modal-divider">
         <ul class="rules-list">
           <li>Si parte con <strong>1 sola parola segreta</strong> nascosta sul tabellone.</li>
-          <li>Indovina le lettere chiamandole <strong>una alla volta</strong> dalla tastiera.</li>
-          <li>🎯 <strong>Lettera Indovinata (Hit)</strong>:
+          <li>Scegli una lettera cliccando sulla tastiera virtuale o usando la tastiera fisica:
             <ul>
-              <li>Se la lettera è presente, viene svelata con sfondo <span class="badge green">Verde</span> in tutte le parole attualmente attive sul tabellone.</li>
-              <li>La lettera sulla tastiera diventa verde.</li>
+              <li>🎯 <strong>Lettera presente (Hit):</strong> viene svelata in <span class="badge green">Verde</span> su <em>tutte</em> le parole attualmente attive sul tabellone.</li>
+              <li>🪢 <strong>Lettera assente (Miss):</strong> commetti un errore e viene aggiunta una <strong>nuova parola</strong> sul tabellone! La lettera errata comparirà in <span class="badge red">Rosso</span> su ogni riga in cui non è presente.</li>
             </ul>
           </li>
-          <li>❌ <strong>Lettera Errata (Miss)</strong>:
-            <ul>
-              <li>Se la lettera <em>non compare</em> in nessuna delle parole attive, viene <strong>aggiunta una nuova parola</strong> al tabellone!</li>
-              <li>Sulla tastiera la lettera errata diventa <span class="badge dark">Scura</span>.</li>
-              <li>Nella nuova parola aggiunta, tutte le lettere errate precedentemente chiamate compaiono già visibili con sfondo scuro.</li>
-            </ul>
-          </li>
-          <li>🏆 <strong>Vittoria</strong>: completa tutte le lettere di tutte le parole presenti. <em>Meno parole finiscono sul tabellone, migliore è il tuo punteggio!</em></li>
-          <li>💀 <strong>Sconfitta</strong>: se raggiungi <strong>7 parole</strong> sul tabellone e commetti un ulteriore errore senza completarle, la partita termina e le lettere mancanti verranno mostrate in <span class="badge red">Rosso</span>.</li>
+          <li>🏆 <strong>Vittoria:</strong> completi tutte le lettere di tutte le parole presenti sul tabellone. Il punteggio migliore si ottiene vincendo con il minor numero di parole usate (1 = perfetto!).</li>
+          <li>💀 <strong>Sconfitta:</strong> se raggiungi il limite massimo di <strong>7 parole attive</strong> e commetti un ulteriore errore senza averle completate.</li>
         </ul>
-        <p class="daily-note">Puoi scegliere la lunghezza delle parole (4, 5, 6, 7 o 8 lettere) nelle Impostazioni ⚙️. Una nuova sfida ogni giorno!</p>
+        <p class="daily-note">Puoi selezionare la lunghezza delle parole (4, 5, 6, 7 o 8 lettere) dal menu Impostazioni ⚙️. Ogni modalità ha statistiche indipendenti!</p>
       </div>
       <div class="modal-footer">
         <button class="btn-primary" data-close="modal-help">HO CAPITO, GIOCA!</button>
@@ -118,11 +146,44 @@
     </div>
   </div>
 
-  <!-- MODALE STATISTICHE -->
+  <!-- MODALE IMPOSTAZIONI & LUNGHEZZA PAROLE -->
+  <div id="modal-settings" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Impostazioni</h2>
+        <button class="btn-close-modal" data-close="modal-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>📏 Lunghezza Parole</h3>
+        <p>Scegli la modalità di gioco. Ogni lunghezza dispone di puzzle e statistiche separate:</p>
+        
+        <div id="length-selector" class="length-selector-group">
+          <button class="length-btn" data-length="4">4 lett.</button>
+          <button class="length-btn active" data-length="5">5 lett.</button>
+          <button class="length-btn" data-length="6">6 lett.</button>
+          <button class="length-btn" data-length="7">7 lett.</button>
+          <button class="length-btn" data-length="8">8 lett.</button>
+        </div>
+
+        <hr class="modal-divider">
+
+        <h3>🗑️ Dati di Gioco</h3>
+        <p>Azzera le statistiche e la partita del giorno per la variante di lunghezza attualmente selezionata.</p>
+        <div class="reset-section">
+          <button id="btn-reset-stats" class="btn-danger">RESETTA STATISTICHE</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close="modal-settings">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE STATISTICHE & DISTRIBUZIONE -->
   <div id="modal-stats" class="modal-overlay hidden">
     <div class="modal-card">
       <div class="modal-header">
-        <h2>Statistiche</h2>
+        <h2>Statistiche (5 lettere)</h2>
         <button class="btn-close-modal" data-close="modal-stats">&times;</button>
       </div>
       <div class="modal-body">
@@ -147,37 +208,38 @@
           </div>
         </div>
 
-        <!-- GRAFICO DISTRIBUZIONE RISULTATI (1-7 PAROLE) -->
-        <div class="chart-section" id="chart-section">
-          <h3>Distribuzione Vittorie</h3>
-          <div class="dist-chart" id="dist-chart"></div>
+        <div class="chart-section">
+          <h3>Distribuzione Vittorie (Parole usate):</h3>
+          <div id="dist-chart" class="dist-chart"></div>
         </div>
 
         <div id="solutions-reveal" class="solutions-container hidden">
-          <h3>Parole in gioco:</h3>
+          <h3>Parole giocate oggi:</h3>
           <div id="solutions-list" class="solutions-list"></div>
         </div>
 
         <div id="share-section" class="share-section hidden">
-          <button id="btn-share" class="btn-share">📋 COPIA RISULTATO</button>
+          <button id="btn-share" class="btn-share">
+            📋 COPIA RISULTATO
+          </button>
         </div>
 
         <div class="history-section">
-          <button id="btn-open-calendar" class="btn-calendar">📅 STORICO & CALENDARIO PARTITE</button>
+          <button id="btn-open-calendar" class="btn-calendar">
+            📅 STORICO & CALENDARIO PARTITE
+          </button>
         </div>
 
-        <!-- Opzione C: Pulsante Ritorno Hub -->
         <div class="hub-return-section">
-          <a href="../index.html" class="btn-back-hub">🏠 TORNA ALL'HUB PRINCIPALE</a>
+          <a href="../index.html" class="btn-back-hub">
+            🏠 TORNA ALL'HUB PRINCIPALE
+          </a>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-primary" data-close="modal-stats">CHIUDI</button>
       </div>
     </div>
   </div>
 
-  <!-- MODALE CALENDARIO DELLE PARTITE -->
+  <!-- MODALE CALENDARIO STORICO -->
   <div id="modal-calendar" class="modal-overlay hidden">
     <div class="modal-card calendar-card">
       <div class="modal-header">
@@ -204,61 +266,6 @@
       </div>
       <div class="modal-footer">
         <button class="btn-primary" data-close="modal-calendar">CHIUDI</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODALE IMPOSTAZIONI -->
-  <div id="modal-settings" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2>⚙️ Impostazioni</h2>
-        <button class="btn-close-modal" data-close="modal-settings">&times;</button>
-      </div>
-      <div class="modal-body">
-        <!-- SELETTORE LUNGHEZZA PAROLE -->
-        <h3>📏 Lunghezza Parole</h3>
-        <p>Scegli il numero di lettere per le parole della sfida giornaliera:</p>
-        <div class="length-selector" id="length-selector">
-          <button class="length-btn" data-length="4">4 Lett.</button>
-          <button class="length-btn active" data-length="5">5 Lett.</button>
-          <button class="length-btn" data-length="6">6 Lett.</button>
-          <button class="length-btn" data-length="7">7 Lett.</button>
-          <button class="length-btn" data-length="8">8 Lett.</button>
-        </div>
-
-        <hr class="modal-divider">
-
-        <h3>🗑️ Dati di Gioco</h3>
-        <p>Azzera statistiche, storico e progressi salvati per la variante attuale.</p>
-        <div class="reset-section">
-          <button id="btn-reset-stats" class="btn-danger">RESETTA STATISTICHE</button>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-secondary" data-close="modal-settings">CHIUDI</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODALE INFORMAZIONI AGGIORNATO -->
-  <div id="modal-about" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2>Informazioni su Impiccato Reverse</h2>
-        <button class="btn-close-modal" data-close="modal-about">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p><strong>Impiccato Reverse</strong> è la versione italiana creata ispirandosi direttamente alle meccaniche e alle regole del gioco originale in inglese <a href="https://foximax.com/" target="_blank" rel="noopener noreferrer" style="color: var(--color-green); font-weight: 800; text-decoration: underline;">FoxiMax</a>.</p>
-        <hr class="modal-divider">
-        <p><strong>Versione:</strong> 1.0.0</p>
-        <p><strong>Autore:</strong> Marcello M.</p>
-        <p><strong>Contatti & Segnalazioni:</strong> <a href="mailto:cinqueincinque@gmail.com" style="color: var(--color-green); font-weight: 700;">cinqueincinque@gmail.com</a></p>
-        <hr class="modal-divider">
-        <p class="daily-note">Divertiti a risolvere le sfide quotidiane con il minor numero di parole possibile!</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-primary" data-close="modal-about">CHIUDI</button>
       </div>
     </div>
   </div>

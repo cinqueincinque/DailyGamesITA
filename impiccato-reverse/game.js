@@ -1,7 +1,7 @@
 // ==========================================================================
 // IMPICCATO REVERSE - MOTORE DI GIOCO PRINCIPALE (game.js)
 // Statistiche, Storico e Grafici 100% INDIPENDENTI per ciascuna lunghezza (4-8)
-// Con autoriparazione automatica dei progressi non registrati
+// Con tracciamento completo Google Analytics (GA4) e Reset Protetto
 // ==========================================================================
 
 (() => {
@@ -20,6 +20,7 @@
 
   let isGameOver = false;
   let isGameWon = false;
+  let isResetting = false;
 
   let calendarViewDate = new Date();
 
@@ -36,13 +37,11 @@
   const modalHelp = document.getElementById("modal-help");
   const modalStats = document.getElementById("modal-stats");
   const modalSettings = document.getElementById("modal-settings");
-  const modalAbout = document.getElementById("modal-about");
   const modalCalendar = document.getElementById("modal-calendar");
 
   const btnHelp = document.getElementById("btn-help");
   const btnStats = document.getElementById("btn-stats");
   const btnSettings = document.getElementById("btn-settings");
-  const btnAbout = document.getElementById("btn-about");
   const btnOpenCalendar = document.getElementById("btn-open-calendar");
 
   // Statistiche e Grafico
@@ -70,6 +69,13 @@
 
   // Impostazioni
   const btnResetStats = document.getElementById("btn-reset-stats");
+
+  // --- TRACCIAMENTO GOOGLE ANALYTICS (GA4) ---
+  function trackEvent(name, params = {}) {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", name, params);
+    }
+  }
 
   // --- INIZIALIZZAZIONE ---
   function init() {
@@ -207,7 +213,7 @@
 
   // --- GESTIONE PRESSIONE LETTERA ---
   function handleLetterChoice(letter) {
-    if (isGameOver) return;
+    if (isGameOver || isResetting) return;
     if (guessedLetters.has(letter) || missedLetters.has(letter)) {
       return;
     }
@@ -275,6 +281,14 @@
     saveGameState();
     const updatedStats = saveGameStats(true, activeWordsCount);
 
+    trackEvent("partita_terminata_impiccato", {
+      day_number: dailyPuzzle.dayNumber,
+      lunghezza_parola: selectedLength,
+      esito: "vittoria",
+      parole_usate: activeWordsCount,
+      errori: missedLetters.size
+    });
+
     showToast("Complimenti, hai vinto! 🏆");
 
     setTimeout(() => {
@@ -291,6 +305,14 @@
     updateStatusBar();
     saveGameState();
     const updatedStats = saveGameStats(false, activeWordsCount);
+
+    trackEvent("partita_terminata_impiccato", {
+      day_number: dailyPuzzle.dayNumber,
+      lunghezza_parola: selectedLength,
+      esito: "limite_parole",
+      parole_usate: activeWordsCount,
+      errori: missedLetters.size
+    });
 
     showToast("Hai esaurito le 7 parole disponibili! 💀");
 
@@ -309,6 +331,7 @@
   }
 
   function saveGameState() {
+    if (isResetting) return;
     const state = {
       dayNumber: dailyPuzzle.dayNumber,
       wordLength: selectedLength,
@@ -372,6 +395,7 @@
   }
 
   function saveGameStats(won, wordsUsed) {
+    if (isResetting) return;
     const stats = getStats(selectedLength);
     const day = dailyPuzzle.dayNumber;
     const todayISO = new Date().toISOString().slice(0, 10);
@@ -419,7 +443,7 @@
   }
 
   function ensureGameRecorded() {
-    if (!isGameOver) return;
+    if (!isGameOver || isResetting) return;
     const stats = getStats(selectedLength);
     const todayISO = new Date().toISOString().slice(0, 10);
 
@@ -434,18 +458,27 @@
     );
     if (!confirmReset) return;
 
+    isResetting = true;
+
     // Rimuove statistiche e cronologia per la lunghezza attiva
     localStorage.removeItem(getStatsKey(selectedLength));
     
     // Rimuove la sessione di gioco attiva per il giorno e la lunghezza corrente
     localStorage.removeItem(getStorageKey());
 
+    // Pulizia variabili di stato locali
+    activeWordsCount = 1;
+    guessedLetters.clear();
+    missedLetters.clear();
+    isGameOver = false;
+    isGameWon = false;
+
     showToast(`Statistiche e partita (${selectedLength} lettere) azzerate! 🗑️`);
     closeModal(modalSettings);
 
     setTimeout(() => {
       window.location.reload();
-    }, 600);
+    }, 400);
   }
 
   // --- POPOLAMENTO MODALE STATISTICHE ---
@@ -671,6 +704,10 @@
           updateLengthSelectorUI();
           loadPuzzleForCurrentLength();
           showToast(`Variante: ${selectedLength} lettere! 📏`);
+
+          trackEvent("cambio_lunghezza_impiccato", {
+            nuova_lunghezza: selectedLength
+          });
         }
       });
     }
@@ -685,7 +722,7 @@
     }
 
     window.addEventListener("keydown", (e) => {
-      if (isGameOver) return;
+      if (isGameOver || isResetting) return;
       if (/^[a-zA-Z]$/.test(e.key)) {
         handleLetterChoice(e.key.toUpperCase());
       }
@@ -703,7 +740,6 @@
     }
 
     if (btnSettings) btnSettings.addEventListener("click", () => openModal(modalSettings));
-    if (btnAbout) btnAbout.addEventListener("click", () => openModal(modalAbout));
 
     if (btnOpenCalendar) {
       btnOpenCalendar.addEventListener("click", () => {
@@ -728,7 +764,6 @@
       });
     }
 
-    // Chiusura universale modali con [data-close]
     document.querySelectorAll("[data-close]").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         const modalId = e.currentTarget.getAttribute("data-close");
@@ -737,18 +772,17 @@
       });
     });
 
-    // Salvataggio prima di tornare all'Hub
     const btnHome = document.getElementById("btn-home");
     if (btnHome) {
       btnHome.addEventListener("click", () => {
-        saveGameState();
+        if (!isResetting) saveGameState();
       });
     }
 
     const btnBackHub = document.querySelector(".btn-back-hub");
     if (btnBackHub) {
       btnBackHub.addEventListener("click", () => {
-        saveGameState();
+        if (!isResetting) saveGameState();
       });
     }
 
@@ -757,6 +791,13 @@
     if (btnShare) {
       btnShare.addEventListener("click", async () => {
         const shareText = generateShareText();
+
+        trackEvent("risultato_condiviso_impiccato", {
+          day_number: dailyPuzzle.dayNumber,
+          lunghezza_parola: selectedLength,
+          esito: isGameWon ? "vittoria" : "limite_parole"
+        });
+
         try {
           if (navigator.clipboard && navigator.clipboard.writeText) {
             await navigator.clipboard.writeText(shareText);
@@ -777,13 +818,15 @@
     }
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
+      if (document.hidden && !isResetting) {
         saveGameState();
       }
     });
 
     window.addEventListener("beforeunload", () => {
-      saveGameState();
+      if (!isResetting) {
+        saveGameState();
+      }
     });
   }
 
