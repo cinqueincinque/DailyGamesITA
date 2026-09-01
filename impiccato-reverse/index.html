@@ -1,1 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Impiccato Reverse - Daily Word Game Italiano</title>
+  <meta name="theme-color" content="#538d4e">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-container">
+    <header>
+      <div class="header-left">
+        <div class="header-col-group">
+          <button id="btn-about" class="icon-btn" aria-label="Informazioni">ℹ️</button>
+          <button id="btn-help" class="icon-btn" aria-label="Regole del gioco">❓</button>
+        </div>
+        <a href="../index.html" id="btn-home" class="icon-btn home-nav-btn" aria-label="Torna all'Hub DailyGamesITA" title="Torna all'Hub">🏠</a>
+      </div>
 
+      <div class="header-center">
+        <div class="logo-wrapper">
+          <a href="../index.html" class="logo-link" title="Torna all'Hub DailyGamesITA">
+            <h1 class="logo">IMPICCATO REVERSE</h1>
+          </a>
+          <span id="game-tag" class="game-tag">GIORNO #1 • 5 LETTERE</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="header-col-group">
+          <button id="btn-stats" class="icon-btn" aria-label="Statistiche">📊</button>
+          <button id="btn-settings" class="icon-btn" aria-label="Impostazioni">⚙️</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="words-status-bar">
+      <span class="status-label">Parole in gioco: <strong id="active-words-count">1</strong>/7</span>
+      <span class="words-counter" id="status-hint">Tocca una lettera per iniziare</span>
+    </div>
+
+    <main class="board-container">
+      <div id="toast-container" class="toast-container"></div>
+      <div id="board" class="board-grid"></div>
+    </main>
+
+    <div class="keyboard" id="keyboard">
+      <div class="keyboard-row">
+        <button class="key-btn" data-key="Q">Q</button>
+        <button class="key-btn" data-key="W">W</button>
+        <button class="key-btn" data-key="E">E</button>
+        <button class="key-btn" data-key="R">R</button>
+        <button class="key-btn" data-key="T">T</button>
+        <button class="key-btn" data-key="Y">Y</button>
+        <button class="key-btn" data-key="U">U</button>
+        <button class="key-btn" data-key="I">I</button>
+        <button class="key-btn" data-key="O">O</button>
+        <button class="key-btn" data-key="P">P</button>
+      </div>
+      <div class="keyboard-row">
+        <button class="key-btn" data-key="A">A</button>
+        <button class="key-btn" data-key="S">S</button>
+        <button class="key-btn" data-key="D">D</button>
+        <button class="key-btn" data-key="F">F</button>
+        <button class="key-btn" data-key="G">G</button>
+        <button class="key-btn" data-key="H">H</button>
+        <button class="key-btn" data-key="J">J</button>
+        <button class="key-btn" data-key="K">K</button>
+        <button class="key-btn" data-key="L">L</button>
+      </div>
+      <div class="keyboard-row">
+        <button class="key-btn" data-key="Z">Z</button>
+        <button class="key-btn" data-key="X">X</button>
+        <button class="key-btn" data-key="C">C</button>
+        <button class="key-btn" data-key="V">V</button>
+        <button class="key-btn" data-key="B">B</button>
+        <button class="key-btn" data-key="N">N</button>
+        <button class="key-btn" data-key="M">M</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE REGOLE -->
+  <div id="modal-help" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Come Giocare a Impiccato Reverse</h2>
+        <button class="btn-close-modal" data-close="modal-help">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Una variante strategica e inversa del classico gioco dell'<strong>Impiccato</strong>!</p>
+        <hr class="modal-divider">
+        <ul class="rules-list">
+          <li>Si parte con <strong>1 sola parola segreta</strong> nascosta sul tabellone.</li>
+          <li>Indovina le lettere chiamandole <strong>una alla volta</strong> dalla tastiera.</li>
+          <li>🎯 <strong>Lettera Indovinata (Hit)</strong>:
+            <ul>
+              <li>Se la lettera è presente, viene svelata con sfondo <span class="badge green">Verde</span> in tutte le parole attualmente attive sul tabellone.</li>
+              <li>La lettera sulla tastiera diventa verde.</li>
+            </ul>
+          </li>
+          <li>❌ <strong>Lettera Errata (Miss)</strong>:
+            <ul>
+              <li>Se la lettera <em>non compare</em> in nessuna delle parole attive, viene <strong>aggiunta una nuova parola</strong> al tabellone!</li>
+              <li>Sulla tastiera la lettera errata diventa <span class="badge dark">Scura</span>.</li>
+              <li>Nella nuova parola aggiunta, tutte le lettere errate precedentemente chiamate compaiono già visibili con sfondo scuro.</li>
+            </ul>
+          </li>
+          <li>🏆 <strong>Vittoria</strong>: completa tutte le lettere di tutte le parole presenti. <em>Meno parole finiscono sul tabellone, migliore è il tuo punteggio!</em></li>
+          <li>💀 <strong>Sconfitta</strong>: se raggiungi <strong>7 parole</strong> sul tabellone e commetti un ulteriore errore senza completarle, la partita termina e le lettere mancanti verranno mostrate in <span class="badge red">Rosso</span>.</li>
+        </ul>
+        <p class="daily-note">Puoi scegliere la lunghezza delle parole (4, 5, 6, 7 o 8 lettere) nelle Impostazioni ⚙️. Una nuova sfida ogni giorno!</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-help">HO CAPITO, GIOCA!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE STATISTICHE -->
+  <div id="modal-stats" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Statistiche</h2>
+        <button class="btn-close-modal" data-close="modal-stats">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="game-result-banner" class="result-banner hidden"></div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div id="stat-played" class="stat-value">0</div>
+            <div class="stat-label">Giocate</div>
+          </div>
+          <div class="stat-box">
+            <div id="stat-win-pct" class="stat-value">0%</div>
+            <div class="stat-label">% Vittorie</div>
+          </div>
+          <div class="stat-box">
+            <div id="stat-streak" class="stat-value streak-value">0 <span class="fire-icon">🔥</span></div>
+            <div class="stat-label">Serie Attuale</div>
+          </div>
+          <div class="stat-box">
+            <div id="stat-best-words" class="stat-value">-</div>
+            <div class="stat-label">Miglior Risultato</div>
+          </div>
+        </div>
+
+        <!-- GRAFICO DISTRIBUZIONE RISULTATI (1-7 PAROLE) -->
+        <div class="chart-section" id="chart-section">
+          <h3>Distribuzione Vittorie</h3>
+          <div class="dist-chart" id="dist-chart"></div>
+        </div>
+
+        <div id="solutions-reveal" class="solutions-container hidden">
+          <h3>Parole in gioco:</h3>
+          <div id="solutions-list" class="solutions-list"></div>
+        </div>
+
+        <div id="share-section" class="share-section hidden">
+          <button id="btn-share" class="btn-share">📋 COPIA RISULTATO</button>
+        </div>
+
+        <div class="history-section">
+          <button id="btn-open-calendar" class="btn-calendar">📅 STORICO & CALENDARIO PARTITE</button>
+        </div>
+
+        <!-- Opzione C: Pulsante Ritorno Hub -->
+        <div class="hub-return-section">
+          <a href="../index.html" class="btn-back-hub">🏠 TORNA ALL'HUB PRINCIPALE</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-stats">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE CALENDARIO DELLE PARTITE -->
+  <div id="modal-calendar" class="modal-overlay hidden">
+    <div class="modal-card calendar-card">
+      <div class="modal-header">
+        <h2>📅 Calendario Partite</h2>
+        <button class="btn-close-modal" data-close="modal-calendar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="calendar-nav">
+          <button id="btn-prev-month" class="cal-nav-btn">&lt;</button>
+          <span id="calendar-month-label" class="calendar-month-label">Mese Anno</span>
+          <button id="btn-next-month" class="cal-nav-btn">&gt;</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+        </div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+
+        <div id="day-detail-box" class="day-detail-box hidden">
+          <h4 id="day-detail-title">Dettagli Giorno</h4>
+          <p id="day-detail-status"></p>
+          <div id="day-detail-words" class="day-detail-words"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-calendar">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE IMPOSTAZIONI -->
+  <div id="modal-settings" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Impostazioni</h2>
+        <button class="btn-close-modal" data-close="modal-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- SELETTORE LUNGHEZZA PAROLE -->
+        <h3>📏 Lunghezza Parole</h3>
+        <p>Scegli il numero di lettere per le parole della sfida giornaliera:</p>
+        <div class="length-selector" id="length-selector">
+          <button class="length-btn" data-length="4">4 Lett.</button>
+          <button class="length-btn active" data-length="5">5 Lett.</button>
+          <button class="length-btn" data-length="6">6 Lett.</button>
+          <button class="length-btn" data-length="7">7 Lett.</button>
+          <button class="length-btn" data-length="8">8 Lett.</button>
+        </div>
+
+        <hr class="modal-divider">
+
+        <h3>🗑️ Dati di Gioco</h3>
+        <p>Azzera statistiche, storico e progressi salvati per la variante attuale.</p>
+        <div class="reset-section">
+          <button id="btn-reset-stats" class="btn-danger">RESETTA STATISTICHE</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close="modal-settings">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE INFORMAZIONI AGGIORNATO -->
+  <div id="modal-about" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Informazioni su Impiccato Reverse</h2>
+        <button class="btn-close-modal" data-close="modal-about">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Impiccato Reverse</strong> è la versione italiana creata ispirandosi direttamente alle meccaniche e alle regole del gioco originale in inglese <a href="https://foximax.com/" target="_blank" rel="noopener noreferrer" style="color: var(--color-green); font-weight: 800; text-decoration: underline;">FoxiMax</a>.</p>
+        <hr class="modal-divider">
+        <p><strong>Versione:</strong> 1.0.0</p>
+        <p><strong>Autore:</strong> Marcello M.</p>
+        <p><strong>Contatti & Segnalazioni:</strong> <a href="mailto:cinqueincinque@gmail.com" style="color: var(--color-green); font-weight: 700;">cinqueincinque@gmail.com</a></p>
+        <hr class="modal-divider">
+        <p class="daily-note">Divertiti a risolvere le sfide quotidiane con il minor numero di parole possibile!</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-about">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
