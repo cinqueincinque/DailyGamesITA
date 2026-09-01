@@ -3,10 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DailyGamesITA - Giochi di Parole Quotidiani</title>
-  <meta name="description" content="I migliori giochi di parole quotidiani in italiano. Sfida la tua mente ogni giorno con 5 in 5 e Impiccato Reverse.">
+  <title>DailyGamesITA - Giochi di Parole Quotidiani in Italiano</title>
+  <meta name="description" content="DailyGamesITA è il portale italiano dei giochi di parole giornalieri: mettiti alla prova ogni giorno con 5 in 5 e Impiccato Reverse. Nuove sfide ogni giorno!">
+  <meta name="keywords" content="daily games ita, giochi di parole italiani, wordle italiano, 5 in 5, impiccato reverse, giochi enigmistica quotidiani, rompicapo parole">
+  <meta name="author" content="Marcello M.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://daily-games-ita.vercel.app/">
   <meta name="theme-color" content="#121213">
+
+  <!-- OPEN GRAPH / FACEBOOK / WHATSAPP / TELEGRAM -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://daily-games-ita.vercel.app/">
+  <meta property="og:title" content="DailyGamesITA - Giochi di Parole Quotidiani in Italiano">
+  <meta property="og:description" content="Sfida la tua mente ogni giorno con i migliori daily word game in italiano: 5 in 5 e Impiccato Reverse.">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="DailyGamesITA">
+
+  <!-- TWITTER CARDS -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DailyGamesITA - Giochi di Parole Quotidiani in Italiano">
+  <meta name="twitter:description" content="Sfida la tua mente ogni giorno con 5 in 5 e Impiccato Reverse. Giochi di parole quotidiani in italiano.">
+
   <link rel="stylesheet" href="style.css">
+
+  <!-- GOOGLE ANALYTICS (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZBPJ48DNG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9ZBPJ48DNG');
+  </script>
 </head>
 <body>
   <div id="app-container">
@@ -45,7 +73,7 @@
           </p>
         </div>
         <div class="card-footer">
-          <a href="5in5/index.html" class="btn-play">GIOCA ORA</a>
+          <a href="5in5/index.html" class="btn-play" id="btn-play-5in5">GIOCA ORA</a>
         </div>
       </article>
 
@@ -61,7 +89,7 @@
           </p>
         </div>
         <div class="card-footer">
-          <a href="impiccato-reverse/index.html" class="btn-play">GIOCA ORA</a>
+          <a href="impiccato-reverse/index.html" class="btn-play" id="btn-play-impiccato">GIOCA ORA</a>
         </div>
       </article>
 
@@ -103,11 +131,19 @@
       <div class="modal-body">
         <p><strong>DailyGamesITA</strong> è un portale indipendente dedicato ai giochi di parole quotidiani in lingua italiana.</p>
         <hr class="modal-divider">
-        <p><strong>Versione Hub:</strong> 1.0.0</p>
-        <p><strong>Autore:</strong> Marcello M.</p>
-        <p><strong>Contatti & Segnalazioni:</strong> <a href="mailto:cinqueincinque@gmail.com" class="link-contact">cinqueincinque@gmail.com</a></p>
+        <div class="about-info-group">
+          <p><strong>Versione:</strong> 1.0.0</p>
+          <p><strong>Autore:</strong> Marcello M.</p>
+          <p><strong>Contatti & Segnalazioni:</strong> <a href="mailto:cinqueincinque@gmail.com" class="link-contact">cinqueincinque@gmail.com</a></p>
+        </div>
         <hr class="modal-divider">
-        <p class="modal-note">Tutti i progressi e le statistiche vengono salvati in locale nel tuo browser per garantirti la massima privacy e velocità.</p>
+        <p><strong>Riconoscimenti & Ispirazioni:</strong></p>
+        <ul style="padding-left: 20px; margin-top: 6px; font-size: 0.84rem; color: #d1d2d4;">
+          <li><em>5 in 5</em> è ispirato al gioco originale <a href="https://five-in-five-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-contact">Five-in-Five</a>.</li>
+          <li><em>Impiccato Reverse</em> è ispirato al concetto originale di <a href="https://foximax.com/" target="_blank" rel="noopener noreferrer" class="link-contact">FoxiMax</a>.</li>
+        </ul>
+        <hr class="modal-divider">
+        <p class="modal-note">Tutti i progressi, le sessioni e le statistiche vengono salvati in locale nel tuo browser per garantirti la massima privacy e velocità.</p>
       </div>
       <div class="modal-footer">
         <button class="btn-primary" data-close="modal-about">CHIUDI</button>
@@ -162,6 +198,15 @@
       const reminderStatusText = document.getElementById("reminder-status-text");
       const btnToggleReminder = document.getElementById("btn-toggle-reminder");
 
+      const btnPlay5in5 = document.getElementById("btn-play-5in5");
+      const btnPlayImpiccato = document.getElementById("btn-play-impiccato");
+
+      function trackEvent(name, params = {}) {
+        if (typeof window.gtag === "function") {
+          window.gtag("event", name, params);
+        }
+      }
+
       function showToast(msg) {
         if (!toastContainer) return;
         const toast = document.createElement("div");
@@ -171,12 +216,31 @@
         setTimeout(() => toast.remove(), 2500);
       }
 
+      // Tracciamento navigazione giochi
+      if (btnPlay5in5) {
+        btnPlay5in5.addEventListener("click", () => {
+          trackEvent("hub_click_gioco", { gioco: "5in5" });
+        });
+      }
+
+      if (btnPlayImpiccato) {
+        btnPlayImpiccato.addEventListener("click", () => {
+          trackEvent("hub_click_gioco", { gioco: "impiccato_reverse" });
+        });
+      }
+
       // Gestione apertura/chiusura modali
       if (btnAbout && modalAbout) {
-        btnAbout.addEventListener("click", () => modalAbout.classList.remove("hidden"));
+        btnAbout.addEventListener("click", () => {
+          modalAbout.classList.remove("hidden");
+          trackEvent("hub_open_about");
+        });
       }
       if (btnSettings && modalSettings) {
-        btnSettings.addEventListener("click", () => modalSettings.classList.remove("hidden"));
+        btnSettings.addEventListener("click", () => {
+          modalSettings.classList.remove("hidden");
+          trackEvent("hub_open_settings");
+        });
       }
 
       document.querySelectorAll("[data-close]").forEach((btn) => {
@@ -254,6 +318,7 @@
                 saveReminderConfig(current);
                 updateReminderUI(true, current.time);
                 showToast("Promemoria giornaliero attivato! 🔔");
+                trackEvent("hub_promemoria_toggle", { enabled: true, time: current.time });
               } else {
                 showToast("Permesso notifiche non concesso nel browser.");
               }
@@ -262,6 +327,7 @@
               saveReminderConfig(current);
               updateReminderUI(false, current.time || "09:00");
               showToast("Promemoria disattivato.");
+              trackEvent("hub_promemoria_toggle", { enabled: false });
             }
           });
         }
