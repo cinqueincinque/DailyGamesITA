@@ -50,13 +50,11 @@
   const btnSubmit = document.getElementById("btn-submit");
 
   const btnHelp = document.getElementById("btn-help");
-  const btnAbout = document.getElementById("btn-about");
   const btnStats = document.getElementById("btn-stats");
   const btnSettings = document.getElementById("btn-settings");
   const btnOpenCalendar = document.getElementById("btn-open-calendar");
 
   const modalHelp = document.getElementById("modal-help");
-  const modalAbout = document.getElementById("modal-about");
   const modalStats = document.getElementById("modal-stats");
   const modalPause = document.getElementById("modal-pause");
   const modalSettings = document.getElementById("modal-settings");
@@ -876,13 +874,6 @@
       btnHelp.addEventListener("click", () => {
         if (isTimerRunning) pauseGame();
         openModal(modalHelp);
-      });
-    }
-
-    if (btnAbout) {
-      btnAbout.addEventListener("click", () => {
-        if (isTimerRunning) pauseGame();
-        openModal(modalAbout);
       });
     }
 

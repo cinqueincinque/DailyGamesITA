@@ -3,11 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>5 in 5 - Daily Word Game Italiano</title>
+  <title>5 in 5 - Daily Word Game Italiano | DailyGamesITA</title>
+  <meta name="description" content="Gioca a 5 in 5 su DailyGamesITA: trova le 5 parole italiane segrete da 4 a 8 lettere prima che scadano i 5 minuti di tempo. Nuova sfida ogni giorno!">
+  <meta name="keywords" content="5 in 5, five in five italiano, wordle italiano, daily word game italia, gioco anagrammi quotidiano, enigmistica online">
+  <meta name="author" content="Marcello M.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://daily-games-ita.vercel.app/5in5/">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#538d4e">
+
+  <!-- OPEN GRAPH / FACEBOOK / WHATSAPP / TELEGRAM -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://daily-games-ita.vercel.app/5in5/">
+  <meta property="og:title" content="5 in 5 - Daily Word Game Italiano">
+  <meta property="og:description" content="Trova 5 parole italiane da 4 a 8 lettere in 5 minuti! Sfida quotidiana di parole su DailyGamesITA.">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="DailyGamesITA">
+
+  <!-- TWITTER CARDS -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="5 in 5 - Daily Word Game Italiano">
+  <meta name="twitter:description" content="Trova 5 parole italiane da 4 a 8 lettere in 5 minuti! Sfida quotidiana su DailyGamesITA.">
+
   <link rel="stylesheet" href="style.css">
 
+  <!-- GOOGLE ANALYTICS (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZBPJ48DNG"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -30,11 +50,10 @@
   <div id="app-container">
     <header>
       <div class="header-left">
-        <div class="header-col-group">
-          <button id="btn-about" class="icon-btn" aria-label="Informazioni sul Gioco">ℹ️</button>
+        <div class="header-v-stack">
           <button id="btn-help" class="icon-btn" aria-label="Regole di Gioco">❓</button>
+          <a href="../index.html" id="btn-home" class="icon-btn home-nav-btn" aria-label="Torna all'Hub DailyGamesITA" title="Torna all'Hub">🏠</a>
         </div>
-        <a href="../index.html" id="btn-home" class="icon-btn home-nav-btn" aria-label="Torna all'Hub DailyGamesITA" title="Torna all'Hub">🏠</a>
       </div>
 
       <div class="header-center">
@@ -150,30 +169,6 @@
       </div>
       <div class="modal-footer">
         <button class="btn-primary" data-close="modal-help">HO CAPITO, GIOCA!</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="modal-about" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2>Informazioni su 5 in 5</h2>
-        <button class="btn-close-modal" data-close="modal-about">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p><strong>5 in 5</strong> è la versione italiana non ufficiale ispirata al gioco originale <a href="https://five-in-five-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-highlight">Five-in-Five</a>.</p>
-        <hr class="modal-divider">
-        <div class="about-info-group">
-          <p><strong>Versione:</strong> 1.2.1</p>
-          <p><strong>Autore:</strong> Marcello M.</p>
-          <p><strong>Segnalazioni, Richieste o Suggerimenti:</strong></p>
-          <p><a href="mailto:cinqueincinque@gmail.com" class="link-highlight">cinqueincinque@gmail.com</a></p>
-        </div>
-        <hr class="modal-divider">
-        <p class="daily-note">Realizzato per gli appassionati di enigmistica e giochi di parole italiani.</p>
-      </div>
-      <div class="modal-footer">
-        <button class="btn-primary" data-close="modal-about">CHIUDI</button>
       </div>
     </div>
   </div>
