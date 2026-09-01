@@ -1,0 +1,21 @@
+{
+  "name": "5 in 5 - Daily Word Game Italiano",
+  "short_name": "5 in 5",
+  "description": "Trova le 5 parole italiane segrete in 5 minuti!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121213",
+  "theme_color": "#538d4e",
+  "icons": [
+    {
+      "src": "https://fav.farm/🧩",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://fav.farm/🧩",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

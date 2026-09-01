@@ -1,1 +1,269 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>5 in 5 - Daily Word Game Italiano</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#538d4e">
+  <link rel="stylesheet" href="style.css">
 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZBPJ48DNG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9ZBPJ48DNG');
+  </script>
+</head>
+<body>
+  <!-- BUFFER DI CARICAMENTO INIZIALE -->
+  <div id="app-loader" class="app-loader">
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <h2 class="loader-title">5 IN 5</h2>
+      <p id="loader-status" class="loader-status">Caricamento vocabolario in corso...</p>
+    </div>
+  </div>
+
+  <div id="app-container">
+    <header>
+      <div class="header-left">
+        <div class="header-col-group">
+          <button id="btn-about" class="icon-btn" aria-label="Informazioni sul Gioco">ℹ️</button>
+          <button id="btn-help" class="icon-btn" aria-label="Regole di Gioco">❓</button>
+        </div>
+        <a href="../index.html" id="btn-home" class="icon-btn home-nav-btn" aria-label="Torna all'Hub DailyGamesITA" title="Torna all'Hub">🏠</a>
+      </div>
+
+      <div class="header-center">
+        <div class="logo-wrapper">
+          <a href="../index.html" class="logo-link" title="Torna all'Hub DailyGamesITA">
+            <h1 class="logo">5 IN 5</h1>
+          </a>
+          <span id="game-tag" class="game-tag">Giorno #1</span>
+        </div>
+        <div class="timer-wrapper">
+          <div id="timer-display" class="timer">05:00</div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="header-col-group">
+          <button id="btn-stats" class="icon-btn" aria-label="Statistiche">📊</button>
+          <button id="btn-settings" class="icon-btn" aria-label="Impostazioni">⚙️</button>
+        </div>
+      </div>
+    </header>
+
+    <div id="round-tracker" class="round-tracker">
+      <div class="tracker-dot active" data-round="0">4 lett.</div>
+      <div class="tracker-dot" data-round="1">5 lett.</div>
+      <div class="tracker-dot" data-round="2">6 lett.</div>
+      <div class="tracker-dot" data-round="3">7 lett.</div>
+      <div class="tracker-dot" data-round="4">8 lett.</div>
+    </div>
+
+    <main>
+      <div id="toast-container" class="toast-container"></div>
+
+      <div id="current-word-slots" class="slots-container"></div>
+
+      <div id="hint-text" class="hint-text"></div>
+
+      <div id="letter-grid" class="letter-grid"></div>
+
+      <div class="action-controls">
+        <button id="btn-backspace" class="control-btn backspace-btn" aria-label="Cancella ultima lettera">
+          ⌫ CANCELLA
+        </button>
+        <button id="btn-pause" class="control-btn pause-btn" aria-label="Metti in pausa">
+          ⏸ PAUSA
+        </button>
+        <button id="btn-submit" class="control-btn submit-btn" aria-label="Invia parola">
+          INVIA ↵
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <div id="modal-pause" class="modal-overlay hidden modal-opaque">
+    <div class="modal-card pause-card">
+      <div class="pause-icon">⏸️</div>
+      <h2>GIOCO IN PAUSA</h2>
+      <p>Il tempo è fermo e la griglia è nascosta.<br>Prenditi un respiro e riprendi quando sei pronto!</p>
+      <div class="modal-footer">
+        <button id="btn-resume" class="btn-primary">▶ RIPRENDI LA PARTITA</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-settings" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>⚙️ Impostazioni</h2>
+        <button class="btn-close-modal" data-close="modal-settings">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h3>🗑️ Dati di Gioco</h3>
+        <p>Vuoi ripartire da zero? Puoi azzerare tutte le statistiche e lo storico delle partite salvate su questo dispositivo per 5 in 5.</p>
+        <div class="reset-section">
+          <button id="btn-reset-stats" class="btn-danger">RESETTA STATISTICHE</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" data-close="modal-settings">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-help" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Come Giocare</h2>
+        <button class="btn-close-modal" data-close="modal-help">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Trova le <strong>5 parole italiane segrete</strong> prima che scadano i <strong>5 minuti</strong>!</p>
+        <hr class="modal-divider">
+        <ul class="rules-list">
+          <li>La griglia contiene esattamente le <strong>30 lettere</strong> necessarie per formare le 5 parole della sfida di oggi.</li>
+          <li>Devi risolvere i round in sequenza crescente: <strong>4, 5, 6, 7 e 8 lettere</strong>.</li>
+          <li>Clicca sulle lettere per comporre una parola e premi <strong>INVIA</strong>.</li>
+          <li><strong>Se inserisci una parola valida ma errata:</strong>
+            <ul>
+              <li>Le lettere posizionate nella <strong>stessa casella esatta</strong> della parola segreta rimangono bloccate negli slot e si illuminano sulla griglia.</li>
+              <li>Le lettere presenti nella parola segreta ma in <strong>posizione differente</strong> si illuminano di <span class="badge yellow">Giallo</span> sulla griglia.</li>
+              <li>Gli altri slot liberi si svuotano per consentirti un nuovo tentativo.</li>
+            </ul>
+          </li>
+          <li><strong>Se inserisci parole non valide (non presenti nel database del gioco):</strong>
+            <ul>
+              <li>Il tentativo viene rifiutato con un messaggio di errore e non ricevi alcun indizio.</li>
+            </ul>
+          </li>
+          <li>💡 <strong>Indizio a tempo</strong>: se rimani bloccato su un round per <strong>45 secondi</strong>, una lettera casuale non ancora trovata viene automaticamente svelata e bloccata nel rispettivo slot (il timer si azzera a ogni round superato).</li>
+          <li>Quando indovini la parola completa, le sue lettere vengono consumate e <span class="badge dark">scurite</span> sulla griglia.</li>
+        </ul>
+        <p class="daily-note">Una nuova sfida è disponibile ogni giorno!</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-help">HO CAPITO, GIOCA!</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-about" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Informazioni su 5 in 5</h2>
+        <button class="btn-close-modal" data-close="modal-about">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>5 in 5</strong> è la versione italiana non ufficiale ispirata al gioco originale <a href="https://five-in-five-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-highlight">Five-in-Five</a>.</p>
+        <hr class="modal-divider">
+        <div class="about-info-group">
+          <p><strong>Versione:</strong> 1.2.1</p>
+          <p><strong>Autore:</strong> Marcello M.</p>
+          <p><strong>Segnalazioni, Richieste o Suggerimenti:</strong></p>
+          <p><a href="mailto:cinqueincinque@gmail.com" class="link-highlight">cinqueincinque@gmail.com</a></p>
+        </div>
+        <hr class="modal-divider">
+        <p class="daily-note">Realizzato per gli appassionati di enigmistica e giochi di parole italiani.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-about">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-stats" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="stats-title">Statistiche</h2>
+        <button class="btn-close-modal" data-close="modal-stats">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="game-result-banner" class="result-banner hidden"></div>
+
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div id="stat-played" class="stat-value">0</div>
+            <div class="stat-label">Giocate</div>
+          </div>
+          <div class="stat-box">
+            <div id="stat-win-pct" class="stat-value">0%</div>
+            <div class="stat-label">% Vittorie</div>
+          </div>
+          <div class="stat-box">
+            <div id="stat-streak" class="stat-value streak-value">0 <span class="fire-icon">🔥</span></div>
+            <div class="stat-label">Serie Attuale</div>
+          </div>
+          <div class="stat-box">
+            <div id="stat-best-time" class="stat-value">--:--</div>
+            <div class="stat-label">Miglior Tempo</div>
+          </div>
+        </div>
+
+        <div id="solutions-reveal" class="solutions-container hidden">
+          <h3>Parole di oggi:</h3>
+          <div id="solutions-list" class="solutions-list"></div>
+        </div>
+
+        <div id="share-section" class="share-section hidden">
+          <button id="btn-share" class="btn-share">
+            📋 COPIA RISULTATO
+          </button>
+        </div>
+
+        <div class="history-section">
+          <button id="btn-open-calendar" class="btn-calendar">
+            📅 STORICO & CALENDARIO PARTITE
+          </button>
+        </div>
+
+        <div class="hub-return-section">
+          <a href="../index.html" class="btn-back-hub">
+            🏠 TORNA ALL'HUB PRINCIPALE
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-calendar" class="modal-overlay hidden">
+    <div class="modal-card calendar-card">
+      <div class="modal-header">
+        <h2>📅 Calendario Partite</h2>
+        <button class="btn-close-modal" data-close="modal-calendar">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="calendar-nav">
+          <button id="btn-prev-month" class="cal-nav-btn">&lt;</button>
+          <span id="calendar-month-label" class="calendar-month-label">Mese Anno</span>
+          <button id="btn-next-month" class="cal-nav-btn">&gt;</button>
+        </div>
+
+        <div class="calendar-weekdays">
+          <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+        </div>
+        <div id="calendar-grid" class="calendar-grid"></div>
+
+        <div id="day-detail-box" class="day-detail-box hidden">
+          <h4 id="day-detail-title">Dettagli Giorno</h4>
+          <p id="day-detail-status"></p>
+          <div id="day-detail-words" class="day-detail-words"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" data-close="modal-calendar">CHIUDI</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="dictionary.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
