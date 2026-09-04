@@ -1,0 +1,1020 @@
+/* ==========================================================================
+   PAROLE INCROCIATE - STILI GLOBALI (style.css)
+   Tema Dark Wordle ultra-compatto, mobile-first e no-scroll (100dvh)
+   Con indicatore termometrico verticale laterale e testo residuo verticale
+   ========================================================================== */
+
+:root {
+  --color-bg: #121213;
+  --color-surface: #1e1e20;
+  --color-surface-light: #2a2a2d;
+  --color-border: #3a3a3c;
+  --color-text: #ffffff;
+  --color-text-muted: #818384;
+
+  --color-green: #538d4e;        /* Successo / Vittoria */
+  --color-present: #b59f3b;      /* Giallo Wordle / Limite corrente */
+  --color-fail: #e74c3c;         /* Errore / Limite tentativi */
+  --color-used: #3a3a3c;         /* Consumato / Inattivo */
+  --color-cell-empty: #1e1e20;
+
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   APP LOADER (CARICAMENTO DIZIONARIO ESTESO)
+   ========================================================================== */
+.app-loader {
+  position: fixed;
+  inset: 0;
+  background-color: var(--color-bg);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.app-loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 20px;
+}
+
+.loader-spinner {
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--color-surface-light);
+  border-top-color: var(--color-present);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loader-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.loader-subtitle {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ==========================================================================
+   CONTENITORE PRINCIPALE
+   ========================================================================== */
+#app-container {
+  max-width: 500px;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 12px 10px;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 6px;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  min-width: 68px;
+}
+
+.header-left {
+  justify-content: flex-start;
+}
+
+.header-right {
+  justify-content: flex-end;
+}
+
+.header-v-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.header-col-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.game-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-present);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.icon-btn:hover {
+  background-color: var(--color-surface-light);
+}
+
+/* MAIN AREA */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 0;
+  padding: 4px 0;
+}
+
+/* TOAST NOTIFICHE */
+.toast-container {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.toast {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: fadeInOut 2.2s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-8px); }
+  15% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+/* BARRA 15 TENTATIVI */
+.attempts-bar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 5px 8px;
+}
+
+.attempts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.range-hint {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+}
+
+.dots-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.attempt-dot {
+  flex: 1;
+  height: 6px;
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+.attempt-dot.used {
+  background-color: var(--color-present);
+  border-color: var(--color-present);
+}
+
+.attempt-dot.win {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+}
+
+.attempt-dot.fail {
+  background-color: var(--color-fail);
+  border-color: var(--color-fail);
+}
+
+/* ==========================================================================
+   AREA CENTRALE DI GIOCO: TABELLONE + BARRA LATERALE VERTICALE (OPZIONE A)
+   ========================================================================== */
+.game-play-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 0;
+  padding: 4px 0;
+}
+
+/* TABELLONE ALFABETICO */
+.board-container {
+  flex: 1;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.boundary-wrapper, .current-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.boundary-label, .input-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.input-label {
+  color: var(--color-present);
+}
+
+.word-row {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  height: 44px;
+}
+
+.letter-cell {
+  background-color: var(--color-cell-empty);
+  border: 2px solid var(--color-border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-text);
+  transition: all 0.15s ease;
+}
+
+.boundary-row .letter-cell {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: #c5c6c8;
+}
+
+.boundary-row.highlight-up .letter-cell,
+.boundary-row.highlight-down .letter-cell {
+  border-color: var(--color-present);
+  animation: pulseBoundary 0.35s ease;
+}
+
+.active-input-row .letter-cell {
+  background-color: var(--color-surface-light);
+  border-color: #565758;
+}
+
+.active-input-row .letter-cell.filled {
+  border-color: #818384;
+  animation: popTile 0.12s ease;
+}
+
+.active-input-row .letter-cell.correct {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+  color: #ffffff;
+  animation: bounceCorrect 0.4s ease;
+}
+
+@keyframes popTile {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulseBoundary {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes bounceCorrect {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.shake {
+  animation: shakeAnim 0.4s ease;
+}
+
+@keyframes shakeAnim {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+/* ==========================================================================
+   COLONNA VERTICALE LATERALE DI PROSSIMITÀ (TESTO RUOTATO STILE EXCEL)
+   ========================================================================== */
+.proximity-vertical-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 82px;
+  height: 204px;
+  background-color: rgba(42, 42, 45, 0.45);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 6px 4px;
+  transition: opacity 0.2s ease;
+}
+
+.proximity-vertical-aside.hidden {
+  display: none;
+}
+
+.pv-header-top, .pv-footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.pv-pct-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-present);
+  white-space: nowrap;
+}
+
+.pv-count-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+/* ZONA CENTRALE BINARIO + ETICHETTA VERTICALE */
+.pv-body-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  width: 100%;
+  margin: 3px 0;
+  min-height: 0;
+}
+
+/* BINARIO VERTICALE */
+.proximity-vertical-track {
+  width: 8px;
+  height: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.proximity-v-fill-top {
+  width: 100%;
+  height: 50%;
+  background-color: var(--color-present);
+  opacity: 0.6;
+  transition: height 0.3s ease;
+}
+
+.proximity-v-fill-bottom {
+  width: 100%;
+  height: 50%;
+  background-color: var(--color-surface-light);
+  transition: height 0.3s ease;
+}
+
+.proximity-v-thumb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+  transform: translateY(-50%);
+  transition: top 0.3s ease;
+}
+
+/* TESTO PAROLE RESIDUE ORIENTATO VERTICALMENTE (STILE EXCEL) */
+.pv-total-words {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   TASTIERA VIRTUALE
+   ========================================================================== */
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.key-btn {
+  flex: 1;
+  max-width: 38px;
+  height: 42px;
+  background-color: var(--color-surface-light);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.08s ease, background-color 0.15s ease;
+}
+
+.key-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+
+.key-btn.special-key {
+  flex: 1.5;
+  max-width: 58px;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   MODALI
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.modal-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.modal-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.btn-close-modal:hover {
+  color: var(--color-text);
+}
+
+.modal-body {
+  padding: 14px 16px;
+  overflow-y: auto;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 4px 0;
+}
+
+.rules-list {
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rules-list ul {
+  padding-left: 16px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.daily-note {
+  font-size: 0.78rem;
+  color: var(--color-present);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* PULSANTI MODALI */
+.btn-primary {
+  background-color: var(--color-green);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-light);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background-color: var(--color-fail);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 9px 14px;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* SELETTORE LUNGHEZZA PAROLE */
+.length-selector-group {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.length-btn {
+  flex: 1;
+  padding: 8px 4px;
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.length-btn.active {
+  background-color: var(--color-present);
+  border-color: var(--color-present);
+  color: #ffffff;
+}
+
+/* STATISTICHE */
+.result-banner {
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.result-banner.win {
+  background-color: rgba(83, 141, 78, 0.2);
+  border: 1px solid var(--color-green);
+  color: var(--color-green);
+}
+
+.result-banner.loss {
+  background-color: rgba(231, 76, 60, 0.2);
+  border: 1px solid var(--color-fail);
+  color: var(--color-fail);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.stat-box {
+  background-color: var(--color-surface-light);
+  padding: 8px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.fire-icon {
+  color: #e67e22;
+}
+
+/* GRAFICO DISTRIBUZIONE TENTATIVI (1-15) */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chart-section h3 {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+.dist-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.dist-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dist-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: 18px;
+  text-align: center;
+}
+
+.dist-bar-track {
+  flex: 1;
+  background-color: var(--color-surface-light);
+  border-radius: 4px;
+  overflow: hidden;
+  height: 15px;
+}
+
+.dist-bar {
+  background-color: var(--color-used);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  min-width: 16px;
+  transition: width 0.3s ease;
+}
+
+.dist-bar.highlight {
+  background-color: var(--color-green);
+}
+
+.solutions-container {
+  background-color: var(--color-surface-light);
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+}
+
+.solutions-container h3 {
+  font-size: 0.82rem;
+  margin-bottom: 4px;
+  color: var(--color-text-muted);
+}
+
+.solutions-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.solution-tag {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-green);
+  color: var(--color-green);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.btn-share {
+  background-color: var(--color-green);
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.btn-calendar {
+  background-color: var(--color-surface-light);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 9px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.btn-back-hub {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 9px;
+  width: 100%;
+}
+
+.btn-back-hub:hover {
+  background-color: var(--color-surface-light);
+}
+
+/* CALENDARIO */
+.calendar-card {
+  max-width: 380px;
+}
+
+.calendar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cal-nav-btn {
+  background: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-weight: 800;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.calendar-month-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 4px;
+  background-color: var(--color-surface-light);
+  border: 1px solid transparent;
+  color: var(--color-text-muted);
+}
+
+.cal-day.empty {
+  background: transparent;
+}
+
+.cal-day.today {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.cal-day.has-game {
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.cal-day.played-win {
+  background-color: var(--color-green);
+}
+
+.cal-day.played-loss {
+  background-color: var(--color-fail);
+}
+
+.cal-day.selected-day {
+  outline: 2px solid #ffffff;
+  outline-offset: 1px;
+}
+
+.day-detail-box {
+  margin-top: 8px;
+  background-color: var(--color-surface-light);
+  border: 1px solid var(--color-border);
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-detail-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
