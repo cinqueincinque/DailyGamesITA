@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DailyGamesITA - Giochi di Parole Quotidiani in Italiano</title>
-  <meta name="description" content="DailyGamesITA è il portale italiano dei giochi di parole giornalieri: mettiti alla prova ogni giorno con 5 in 5 e Impiccato Reverse. Nuove sfide ogni giorno!">
-  <meta name="keywords" content="daily games ita, giochi di parole italiani, wordle italiano, 5 in 5, impiccato reverse, giochi enigmistica quotidiani, rompicapo parole">
+  <meta name="description" content="DailyGamesITA è il portale italiano dei giochi di parole giornalieri: mettiti alla prova ogni giorno con 5 in 5, Impiccato Reverse e Parole Incrociate. Nuove sfide ogni giorno!">
+  <meta name="keywords" content="daily games ita, giochi di parole italiani, wordle italiano, 5 in 5, impiccato reverse, parole incrociate, betweenle italiano, giochi enigmistica quotidiani">
   <meta name="author" content="Marcello M.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://daily-games-ita.vercel.app/">
@@ -15,14 +15,14 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://daily-games-ita.vercel.app/">
   <meta property="og:title" content="DailyGamesITA - Giochi di Parole Quotidiani in Italiano">
-  <meta property="og:description" content="Sfida la tua mente ogni giorno con i migliori daily word game in italiano: 5 in 5 e Impiccato Reverse.">
+  <meta property="og:description" content="Sfida la tua mente ogni giorno con i migliori daily word game in italiano: 5 in 5, Impiccato Reverse e Parole Incrociate.">
   <meta property="og:locale" content="it_IT">
   <meta property="og:site_name" content="DailyGamesITA">
 
   <!-- TWITTER CARDS -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="DailyGamesITA - Giochi di Parole Quotidiani in Italiano">
-  <meta name="twitter:description" content="Sfida la tua mente ogni giorno con 5 in 5 e Impiccato Reverse. Giochi di parole quotidiani in italiano.">
+  <meta name="twitter:description" content="Sfida la tua mente ogni giorno con 5 in 5, Impiccato Reverse e Parole Incrociate su DailyGamesITA.">
 
   <link rel="stylesheet" href="style.css">
 
@@ -59,7 +59,7 @@
       </div>
     </header>
 
-    <!-- GRIGLIA GIOCHI MINIMAL -->
+    <!-- GRIGLIA GIOCHI -->
     <main class="games-grid">
       <!-- GIOCO 1: 5 IN 5 -->
       <article class="game-card" id="card-5in5">
@@ -85,7 +85,7 @@
         <div class="card-body">
           <h2 class="game-title">Impiccato Reverse</h2>
           <p class="game-desc">
-            Indovina la parola segreta, ma ogni lettera errata ne aggiunge una nuova!
+            Indovina la parola segreta, ma ogni lettera errata ne aggiunge una nuova sul tabellone!
           </p>
         </div>
         <div class="card-footer">
@@ -93,19 +93,35 @@
         </div>
       </article>
 
-      <!-- GIOCO 3: PROSSIMAMENTE -->
-      <article class="game-card card-disabled">
+      <!-- GIOCO 3: PAROLE INCROCIATE -->
+      <article class="game-card" id="card-parole-incrociate">
         <div class="card-header">
-          <span class="game-badge badge-coming">IN ARRIVO 🔒</span>
+          <span class="game-badge badge-pending" id="badge-parole-incrociate">DA GIOCARE ⏳</span>
         </div>
         <div class="card-body">
-          <h2 class="game-title">Nuovo Gioco</h2>
+          <h2 class="game-title">Parole Incrociate</h2>
           <p class="game-desc">
-            Una nuova sfida di parole in arrivo prossimamente.
+            Trova la parola misteriosa restringendo i limiti alfabetici entro 15 tentativi!
           </p>
         </div>
         <div class="card-footer">
-          <button class="btn-play btn-disabled" disabled>PRESTO DISPONIBILE</button>
+          <a href="parole-incrociate/index.html" class="btn-play" id="btn-play-parole-incrociate">GIOCA ORA</a>
+        </div>
+      </article>
+
+      <!-- GIOCO 4: IN ARRIVO (PROSSIMAMENTE) -->
+      <article class="game-card" id="card-in-arrivo">
+        <div class="card-header">
+          <span class="game-badge badge-pending" id="badge-in-arrivo" style="background-color: var(--color-surface-light, #2a2a2d); color: var(--color-text-muted, #818384); border-color: var(--color-border, #3a3a3c);">IN ARRIVO 🔒</span>
+        </div>
+        <div class="card-body">
+          <h2 class="game-title">In Arrivo...</h2>
+          <p class="game-desc">
+            Un nuovo gioco di parole in lingua italiana è attualmente in fase di ideazione e sviluppo!
+          </p>
+        </div>
+        <div class="card-footer">
+          <button class="btn-play" id="btn-play-in-arrivo" disabled style="pointer-events: none; opacity: 0.55; cursor: not-allowed;">PROSSIMAMENTE</button>
         </div>
       </article>
     </main>
@@ -132,15 +148,16 @@
         <p><strong>DailyGamesITA</strong> è un portale indipendente dedicato ai giochi di parole quotidiani in lingua italiana.</p>
         <hr class="modal-divider">
         <div class="about-info-group">
-          <p><strong>Versione:</strong> 1.0.2</p>
+          <p><strong>Versione:</strong> 2.0.0</p>
           <p><strong>Autore:</strong> Marcello M.</p>
           <p><strong>Contatti & Segnalazioni:</strong> <a href="mailto:cinqueincinque@gmail.com" class="link-contact">cinqueincinque@gmail.com</a></p>
         </div>
         <hr class="modal-divider">
-        <p><strong>Riconoscimenti & Ispirazioni:</strong></p>
-        <ul style="padding-left: 20px; margin-top: 6px; font-size: 0.84rem; color: #d1d2d4;">
-          <li><em>5 in 5</em> è ispirato al gioco originale <a href="https://five-in-five-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-contact">Five-in-Five</a>.</li>
-          <li><em>Impiccato Reverse</em> è ispirato al concetto originale di <a href="https://foximax.com/" target="_blank" rel="noopener noreferrer" class="link-contact">FoxiMax</a>.</li>
+        <p><strong>I Giochi della Piattaforma:</strong></p>
+        <ul style="padding-left: 20px; margin-top: 6px; font-size: 0.84rem; color: #d1d2d4; display: flex; flex-direction: column; gap: 4px;">
+          <li><strong>5 in 5:</strong> 5 tappe a lunghezza crescente (4-8 lettere) in 5:00 minuti totali ad anagramma chiuso. Ispirato a <a href="https://five-in-five-one.vercel.app/" target="_blank" rel="noopener noreferrer" class="link-contact">Five-in-Five</a>.</li>
+          <li><strong>Impiccato Reverse:</strong> L'impiccato al contrario con max 6 parole/errori e statistiche indipendenti (4-8 lettere). Ispirato a <a href="https://foximax.com/" target="_blank" rel="noopener noreferrer" class="link-contact">FoxiMax</a>.</li>
+          <li><strong>Parole Incrociate:</strong> Restringi i confini alfabetici entro 15 tentativi con indicatore verticale e quote di vocabolario. Ispirato a <a href="https://betweenle.com/" target="_blank" rel="noopener noreferrer" class="link-contact">Betweenle</a>.</li>
         </ul>
         <hr class="modal-divider">
         <p class="modal-note">Tutti i progressi, le sessioni e le statistiche vengono salvati in locale nel tuo browser per garantirti la massima privacy e velocità.</p>
@@ -200,6 +217,7 @@
 
       const btnPlay5in5 = document.getElementById("btn-play-5in5");
       const btnPlayImpiccato = document.getElementById("btn-play-impiccato");
+      const btnPlayParoleIncrociate = document.getElementById("btn-play-parole-incrociate");
 
       function trackEvent(name, params = {}) {
         if (typeof window.gtag === "function") {
@@ -216,7 +234,6 @@
         setTimeout(() => toast.remove(), 2500);
       }
 
-      // Tracciamento navigazione giochi
       if (btnPlay5in5) {
         btnPlay5in5.addEventListener("click", () => {
           trackEvent("hub_click_gioco", { gioco: "5in5" });
@@ -229,7 +246,12 @@
         });
       }
 
-      // Gestione apertura/chiusura modali
+      if (btnPlayParoleIncrociate) {
+        btnPlayParoleIncrociate.addEventListener("click", () => {
+          trackEvent("hub_click_gioco", { gioco: "parole_incrociate" });
+        });
+      }
+
       if (btnAbout && modalAbout) {
         btnAbout.addEventListener("click", () => {
           modalAbout.classList.remove("hidden");
@@ -251,7 +273,6 @@
         });
       });
 
-      // Gestione Promemoria Centralizzato
       function getReminderConfig() {
         try {
           return JSON.parse(localStorage.getItem(REMINDER_KEY) || '{"enabled":false,"time":"09:00"}');
@@ -333,7 +354,6 @@
         }
       }
 
-      // Sincronizzazione dinamica dello stato giornaliero da localStorage
       function checkGamesStatus() {
         const todayISO = new Date().toISOString().slice(0, 10);
         const startDate = new Date("2026-01-01T00:00:00");
@@ -368,11 +388,11 @@
 
         // 2. Controllo Impiccato Reverse
         try {
-          const settings = JSON.parse(localStorage.getItem("impiccato_reverse_settings") || '{"wordLength":5}');
-          const len = settings.wordLength || 5;
-          const statsImp = JSON.parse(localStorage.getItem(`impiccato_reverse_stats_len_${len}`) || "{}");
+          const settingsImp = JSON.parse(localStorage.getItem("impiccato_reverse_settings") || '{"wordLength":5}');
+          const lenImp = settingsImp.wordLength || 5;
+          const statsImp = JSON.parse(localStorage.getItem(`impiccato_reverse_stats_len_${lenImp}`) || "{}");
           const badgeImp = document.getElementById("badge-impiccato");
-          const saveImp = JSON.parse(localStorage.getItem(`impiccato_reverse_save_day_${currentDayNumber}_len_${len}`) || "null");
+          const saveImp = JSON.parse(localStorage.getItem(`impiccato_reverse_save_day_${currentDayNumber}_len_${lenImp}`) || "null");
 
           if (badgeImp) {
             if (statsImp.history && statsImp.history[todayISO]) {
@@ -389,6 +409,33 @@
             } else {
               badgeImp.textContent = "DA GIOCARE ⏳";
               badgeImp.className = "game-badge badge-pending";
+            }
+          }
+        } catch (e) {}
+
+        // 3. Controllo Parole Incrociate
+        try {
+          const settingsInc = JSON.parse(localStorage.getItem("parole_incrociate_settings") || '{"wordLength":5}');
+          const lenInc = settingsInc.wordLength || 5;
+          const statsInc = JSON.parse(localStorage.getItem(`parole_incrociate_stats_len_${lenInc}`) || "{}");
+          const badgeInc = document.getElementById("badge-parole-incrociate");
+          const saveInc = JSON.parse(localStorage.getItem(`parole_incrociate_save_day_${currentDayNumber}_len_${lenInc}`) || "null");
+
+          if (badgeInc) {
+            if (statsInc.history && statsInc.history[todayISO]) {
+              if (statsInc.history[todayISO].won) {
+                badgeInc.textContent = "COMPLETATO 🏆";
+                badgeInc.className = "game-badge badge-won";
+              } else {
+                badgeInc.textContent = "COMPLETATO ✅";
+                badgeInc.className = "game-badge badge-played";
+              }
+            } else if (saveInc && !saveInc.isGameOver && (saveInc.attemptsHistory && saveInc.attemptsHistory.length > 0)) {
+              badgeInc.textContent = "IN CORSO 🟡";
+              badgeInc.className = "game-badge badge-progress";
+            } else {
+              badgeInc.textContent = "DA GIOCARE ⏳";
+              badgeInc.className = "game-badge badge-pending";
             }
           }
         } catch (e) {}

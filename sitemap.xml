@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- HUB CENTRALE DAILYGAMESITA -->
+  <!-- Hub Principale -->
   <url>
     <loc>https://daily-games-ita.vercel.app/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- GIOCO 5 IN 5 -->
+  <!-- Gioco 1: 5 in 5 -->
   <url>
     <loc>https://daily-games-ita.vercel.app/5in5/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- GIOCO IMPICCATO REVERSE -->
+  <!-- Gioco 2: Impiccato Reverse -->
   <url>
     <loc>https://daily-games-ita.vercel.app/impiccato-reverse/</loc>
-    <lastmod>2026-09-01</lastmod>
+    <lastmod>2026-09-04</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Gioco 3: Parole Incrociate -->
+  <url>
+    <loc>https://daily-games-ita.vercel.app/parole-incrociate/</loc>
+    <lastmod>2026-09-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
