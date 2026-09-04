@@ -1,6 +1,6 @@
 /* ==========================================================================
    IMPICCATO REVERSE - STILI GLOBALI (style.css)
-   Tema Dark Wordle ultra-compatto, mobile-first e no-scroll
+   Tema Dark Wordle ultra-compatto, mobile-first e no-scroll (max 6 righe)
    ========================================================================== */
 
 :root {
@@ -204,7 +204,7 @@ main {
   100% { opacity: 0; transform: translateY(-8px); }
 }
 
-/* TABELLONE PAROLE (1-7 RIGHE) */
+/* TABELLONE PAROLE (1-6 RIGHE) */
 .board {
   flex: 1;
   display: flex;
@@ -222,8 +222,8 @@ main {
   width: 100%;
   max-width: 380px;
   margin: 0 auto;
-  height: calc(100% / 7);
-  max-height: 38px;
+  height: calc(100% / 6);
+  max-height: 44px;
 }
 
 .letter-cell {

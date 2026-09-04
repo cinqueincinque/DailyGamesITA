@@ -1,16 +1,18 @@
 // ==========================================================================
 // IMPICCATO REVERSE - MOTORE DI GIOCO PRINCIPALE (game.js)
-// Statistiche, Storico e Grafici 100% INDIPENDENTI per ciascuna lunghezza (4-8)
-// Con tracciamento completo Google Analytics (GA4) e Reset Protetto
+// Limite massimo: 6 PAROLE ATTIVE.
+// Statistiche, Storico e Grafici (1-6) 100% INDIPENDENTI per lunghezza (4-8)
+// Con tracciamento GA4, reset protetto e migrazione pulita automatica
 // ==========================================================================
 
 (() => {
   "use strict";
 
-  const MAX_WORDS = 7;
+  const MAX_WORDS = 6;
   const STORAGE_KEY_PREFIX = "impiccato_reverse_save_day_";
   const STATS_KEY_PREFIX = "impiccato_reverse_stats_len_";
   const SETTINGS_KEY = "impiccato_reverse_settings";
+  const MIGRATION_FLAG_KEY = "impiccato_reverse_v2_6words_migrated";
 
   let selectedLength = 5;
   let dailyPuzzle = null;
@@ -70,6 +72,28 @@
   // Impostazioni
   const btnResetStats = document.getElementById("btn-reset-stats");
 
+  // --- MIGRAZIONE PULITA AUTOMATICA AI 6 TENTATIVI ---
+  function checkAndRunMigration() {
+    try {
+      if (!localStorage.getItem(MIGRATION_FLAG_KEY)) {
+        for (let len = 4; len <= 8; len++) {
+          localStorage.removeItem(`${STATS_KEY_PREFIX}${len}`);
+          const keysToRemove = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && k.startsWith(STORAGE_KEY_PREFIX) && k.includes(`_len_${len}`)) {
+              keysToRemove.push(k);
+            }
+          }
+          keysToRemove.forEach(k => localStorage.removeItem(k));
+        }
+        localStorage.setItem(MIGRATION_FLAG_KEY, "true");
+      }
+    } catch (e) {
+      console.warn("Impossibile eseguire migrazione automatica:", e);
+    }
+  }
+
   // --- TRACCIAMENTO GOOGLE ANALYTICS (GA4) ---
   function trackEvent(name, params = {}) {
     if (typeof window.gtag === "function") {
@@ -79,6 +103,7 @@
 
   // --- INIZIALIZZAZIONE ---
   function init() {
+    checkAndRunMigration();
     loadSettings();
     loadPuzzleForCurrentLength();
     setupEventListeners();
@@ -206,7 +231,7 @@
         statusHintElem.textContent = isGameWon ? "Sfida completata! 🏆" : "Partita terminata 💀";
       } else {
         const count = missedLetters.size;
-        statusHintElem.textContent = `${count} ${count === 1 ? 'errore commesso' : 'errori commessi'}`;
+        statusHintElem.textContent = `${count} ${count === 1 ? "errore commesso" : "errori commessi"}`;
       }
     }
   }
@@ -314,7 +339,7 @@
       errori: missedLetters.size
     });
 
-    showToast("Hai esaurito le 7 parole disponibili! 💀");
+    showToast("Hai esaurito le 6 parole disponibili! 💀");
 
     setTimeout(() => {
       openEndGameModal(false, updatedStats);
@@ -376,7 +401,7 @@
       maxStreak: 0,
       bestWords: null,
       lastPlayedDay: null,
-      guessesDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 },
+      guessesDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 },
       history: {}
     };
     try {
@@ -460,13 +485,9 @@
 
     isResetting = true;
 
-    // Rimuove statistiche e cronologia per la lunghezza attiva
     localStorage.removeItem(getStatsKey(selectedLength));
-    
-    // Rimuove la sessione di gioco attiva per il giorno e la lunghezza corrente
     localStorage.removeItem(getStorageKey());
 
-    // Pulizia variabili di stato locali
     activeWordsCount = 1;
     guessedLetters.clear();
     missedLetters.clear();
@@ -503,10 +524,10 @@
         gameResultBanner.classList.remove("hidden", "win", "loss");
         if (isGameWon) {
           gameResultBanner.classList.add("win");
-          gameResultBanner.textContent = `Vittoria (${selectedLength} lettere) con ${activeWordsCount} ${activeWordsCount === 1 ? 'parola' : 'parole'}! 🏆`;
+          gameResultBanner.textContent = `Vittoria (${selectedLength} lettere) con ${activeWordsCount} ${activeWordsCount === 1 ? "parola" : "parole"}! 🏆`;
         } else {
           gameResultBanner.classList.add("loss");
-          gameResultBanner.textContent = "Limite di 7 parole raggiunto! Ritenta domani 💀";
+          gameResultBanner.textContent = "Limite di 6 parole raggiunto! Ritenta domani 💀";
         }
       }
 
@@ -532,12 +553,12 @@
     }
   }
 
-  // --- GRAFICO DISTRIBUZIONE (1-7 PAROLE) ---
+  // --- GRAFICO DISTRIBUZIONE (1-6 PAROLE) ---
   function renderDistributionChart(stats, currentWordsWon) {
     if (!distChart) return;
     distChart.innerHTML = "";
 
-    const dist = stats.guessesDistribution || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
+    const dist = stats.guessesDistribution || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
     const maxVal = Math.max(...Object.values(dist), 1);
 
     for (let i = 1; i <= MAX_WORDS; i++) {
@@ -671,7 +692,7 @@
 
   function generateShareText() {
     let text = `Impiccato Reverse • Giorno #${dailyPuzzle.dayNumber} (${selectedLength} lettere)\n`;
-    text += isGameWon ? `Risolto in ${activeWordsCount}/7 parole! 🪢🏆\n\n` : `X/7 parole 💀\n\n`;
+    text += isGameWon ? `Risolto in ${activeWordsCount}/6 parole! 🪢🏆\n\n` : `X/6 parole 💀\n\n`;
 
     for (let r = 0; r < activeWordsCount; r++) {
       const word = dailyPuzzle.words[r];
